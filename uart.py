@@ -1,10 +1,17 @@
+from turtle import delay
 import serial
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
+import pandas as pd
 
 # Khởi tạo kết nối UART
-ser = serial.Serial('/dev/ttyUSB0', 9600)  
-import pandas as pd
+ser = serial.Serial(
+    port='COM8',\
+    baudrate=9600,\
+    parity=serial.PARITY_NONE,\
+    stopbits=serial.STOPBITS_ONE,\
+    bytesize=serial.EIGHTBITS,\
+        timeout=0)
 
 # Thiết lập đồ thị
 fig, ax = plt.subplots()
@@ -25,7 +32,7 @@ def update(frame):
     line.set_data(xdata, ydata)
     # Cập nhật giới hạn trục x để cuộn trục
     ax.set_xlim(frame-20, frame+1)
-    
+    delay(50)
     return line,
 
 ani = FuncAnimation(fig, update, frames=range(1000), blit=False, interval=50)
